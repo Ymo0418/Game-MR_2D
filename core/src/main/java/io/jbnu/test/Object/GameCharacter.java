@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -14,6 +15,7 @@ import io.jbnu.test.Manager.ColliderMgr;
 import io.jbnu.test.Manager.InputMgr;
 import io.jbnu.test.Manager.ObjectMgr;
 import io.jbnu.test.Manager.RenderMgr;
+import io.jbnu.test.Manager.ResourceMgr;
 import io.jbnu.test.Object.Background.Background;
 
 public class GameCharacter extends GameObject {
@@ -57,8 +59,6 @@ public class GameCharacter extends GameObject {
     final float START_ACCELERATE = 3f;
     final float STOP_ACCELERATE = -3.75f; //3f * -1.25f;
 
-    BitmapFont font = new BitmapFont();
-
     public GameCharacter() {
         super("Player", 96f, 96f, 2f, 2f);
         vVelocity = new Vector2(0, 0);
@@ -71,7 +71,7 @@ public class GameCharacter extends GameObject {
     }
 
     private void StateUpdate(float _fTimeDelta) {
-        Input(_fTimeDelta);
+        HorizontalInput(_fTimeDelta);
 
         if(bAttacking) {
             fAttackTimer += _fTimeDelta;
@@ -122,6 +122,7 @@ public class GameCharacter extends GameObject {
             vVelocity.y = Math.max(vDir.y, 0f);
 
             ObjectMgr.GetInst().AddObjectRuntime("Effect", new PlayerAttack(vPosition, new Vector2(vDir.x, vDir.y)));
+            ResourceMgr.GetInst().PlaySound("Slash"+(MathUtils.random(2)+1), 0.2f, false);
 
             bAttacking = true;
             bJumping = true;
@@ -233,7 +234,7 @@ public class GameCharacter extends GameObject {
         }
     }
 
-    private void Input(float _fTimeDelta) {
+    private void HorizontalInput(float _fTimeDelta) {
         float fAxisDelta = 0f;
 
         int iKeyForward;
@@ -282,8 +283,8 @@ public class GameCharacter extends GameObject {
     @Override
     public void Update(float _fTimeDelta) {
         if(animSprite.IsAnimPlaying(AnimIndex.ANIM_PLAYSONG.ordinal())) {
-            if(animSprite.GetAnimRate() > 0.9f) {
-
+            if(animSprite.GetAnimRate() > 0.9f && ResourceMgr.GetInst().IsNoBgm()) {
+                ResourceMgr.GetInst().PlayBgm("BGM_S1");
             }
         }
         else {

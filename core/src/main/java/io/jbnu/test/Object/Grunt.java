@@ -2,11 +2,13 @@ package io.jbnu.test.Object;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import io.jbnu.test.Collider;
 import io.jbnu.test.Manager.ColliderMgr;
 import io.jbnu.test.Manager.RenderMgr;
+import io.jbnu.test.Manager.ResourceMgr;
 
 public class Grunt extends GameObject {
     private enum AnimIndex {
@@ -69,6 +71,7 @@ public class Grunt extends GameObject {
             if(bHit) {
                 bHit = false;
                 animSprite.ChangeAnimation(AnimIndex.ANIM_HURT.ordinal(), true, false);
+                ResourceMgr.GetInst().PlaySound("EnemyDeath" + (MathUtils.random(1) + 1), 0.2f, false);
             }
             else {
                 fAttackTimer -= _fTimeDelta;

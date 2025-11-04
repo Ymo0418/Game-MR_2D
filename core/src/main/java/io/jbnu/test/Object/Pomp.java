@@ -2,11 +2,13 @@ package io.jbnu.test.Object;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import io.jbnu.test.Collider;
 import io.jbnu.test.Manager.ColliderMgr;
 import io.jbnu.test.Manager.RenderMgr;
+import io.jbnu.test.Manager.ResourceMgr;
 
 public class Pomp extends GameObject {
     private enum AnimIndex {
@@ -86,6 +88,7 @@ public class Pomp extends GameObject {
                     bHit = false;
                     animSprite.ChangeAnimation(AnimIndex.ANIM_KNOCKDOWN.ordinal(), true, false);
                     fAttackTimer = fAttackTime * 2f;
+                    ResourceMgr.GetInst().PlaySound("EnemyParry", 0.2f, false);
                 } else {
                     attackBox.Update(new Vector2(vMovement.x + vPosition.x, vMovement.y + vPosition.y), vScale);
                     ColliderMgr.GetInst().RegisterCollider(attackBox);
@@ -94,6 +97,7 @@ public class Pomp extends GameObject {
             else if (bHit) {
                 bHit = false;
                 animSprite.ChangeAnimation(AnimIndex.ANIM_HURT.ordinal(), true, false);
+                ResourceMgr.GetInst().PlaySound("EnemyDeath" + (MathUtils.random(1) + 1), 0.2f, false);
             }
         }
         else {
@@ -104,12 +108,14 @@ public class Pomp extends GameObject {
                 if(bHit) {
                     bHit = false;
                     animSprite.ChangeAnimation(AnimIndex.ANIM_HURT.ordinal(), true, false);
+                    ResourceMgr.GetInst().PlaySound("EnemyDeath" + (MathUtils.random(1) + 1), 0.2f, false);
                 }
             }
             if (!animSprite.IsAnimPlaying(AnimIndex.ANIM_HURT.ordinal())) {
                 if(bHit) {
                     bHit = false;
                     animSprite.ChangeAnimation(AnimIndex.ANIM_HURT.ordinal(), true, false);
+                    ResourceMgr.GetInst().PlaySound("EnemyDeath" + (MathUtils.random(1) + 1), 0.2f, false);
                 }
                 else if(bIdling) {
                     fIdleTimer -= _fTimeDelta;

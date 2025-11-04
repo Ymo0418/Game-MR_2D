@@ -27,7 +27,7 @@ public class PlayerAttack extends GameObject{
 
         collider = new Collider(Collider.ColliderType.COL_PLAYER_ATTACK
             , new Vector2(0f, 0f)
-            , new Vector2(75f, 35f));
+            , new Vector2(80f, 35f));
     }
 
     @Override

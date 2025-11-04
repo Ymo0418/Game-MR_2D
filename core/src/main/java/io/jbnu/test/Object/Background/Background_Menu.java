@@ -18,8 +18,7 @@ public class Background_Menu extends Background {
         font2.getData().setScale(3f);
         font3.getData().setScale(4f);
 
-        ResourceMgr.GetInst().StopSound("BGM_S0");
-        ResourceMgr.GetInst().PlaySound("BGM_S0", 0.2f, true);
+        ResourceMgr.GetInst().PlayBgm("BGM_S0");
     }
 
     @Override

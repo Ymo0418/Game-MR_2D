@@ -1,6 +1,7 @@
 package io.jbnu.test.Manager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ public class ResourceMgr {
     private HashMap<String, Texture> Textures = new HashMap<>();
     private HashMap<String, MySprite> Sprites = new HashMap<>();
     private HashMap<String, Sound> Sounds = new HashMap<>();
+    String curBgmTag = null;
 
     private ResourceMgr() {
     }
@@ -45,6 +47,28 @@ public class ResourceMgr {
                 Sounds.get(_strTag).play(_fVolume);
         }
     }
+
+    public void PlayBgm(String _strTag) {
+        if(curBgmTag != null)
+            Sounds.get(curBgmTag).stop();
+
+        if(Sounds.containsKey(_strTag)) {
+            curBgmTag = _strTag;
+            Sounds.get(_strTag).loop(0.2f);
+        }
+    }
+
+    public void StopBgm() {
+        if(curBgmTag != null) {
+            Sounds.get(curBgmTag).stop();
+            curBgmTag = null;
+        }
+    }
+
+    public boolean IsNoBgm() {
+        return curBgmTag == null;
+    }
+
     public void StopSound(String _strTag) {
         if(Sounds.containsKey(_strTag))
             Sounds.get(_strTag).stop();
@@ -56,10 +80,6 @@ public class ResourceMgr {
     public void ResumeSound(String _strTag) {
         if(Sounds.containsKey(_strTag))
             Sounds.get(_strTag).resume();
-    }
-
-    public void VolumeAllSound() {
-
     }
 
     public MySprite GetSprite(String _strTag) {
